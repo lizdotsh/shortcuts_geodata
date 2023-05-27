@@ -4,27 +4,27 @@ library(ggmap)
 library(spData)
 
 test_convert_and_duration <- function() {
-state_test <- tribble(
-    ~lat, ~long, ~unixtime,
-    -90, 44, 4000,
-    -90, 44, 5000,
-    -120, 44, 6000,
-    -120, 44.5, 7000,
-    -123, 44, 8000,
-    -100, 24, 8500,
-    -120, 24.5, 9000,
-    -123, 24, 9350,
+    state_test <- tribble(
+        ~lat, ~long, ~unixtime,
+        -90, 44, 4000,
+        -90, 44, 5000,
+        -120, 44, 6000,
+        -120, 44.5, 7000,
+        -123, 44, 8000,
+        -100, 24, 8500,
+        -120, 24.5, 9000,
+        -123, 24, 9350,
+        
+        -90, 44, 11000,
+        -91,43, 33333,
+    )
+    converted = covert_coords_to_stateid(state_test) 
     
-    -90, 44, 11000,
-    -91,43, 33333,
-)
-converted = covert_coords_to_stateid(state_test) 
-
-print(converted)
-
-converted %>% 
-    time_segments %>% 
-    return()
+    print(converted)
+    
+    converted %>% 
+        time_segments %>% 
+        return()
 }
 test_convert_and_duration()
 
