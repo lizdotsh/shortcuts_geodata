@@ -1,4 +1,8 @@
 # Geolocation log parsed into location intervals by state
+Usage: 
+
+Run `Rscript transform_geodata.R data/path_to_log_file`. Defaults to data/scratch.md.
+
 
 Takes an input of specifically coded log data from a iOS shortcut that includes a timestamp. Only works with that specific formatting. This is hardcoded in as 'scratch.md' in the function call, but changing argument of main function call will change it. By default, all results are stored in a folder called data/. 
 

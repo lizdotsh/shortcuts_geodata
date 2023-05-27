@@ -1,14 +1,22 @@
-library(tidyverse)
-library(sf)
-library(ggmap)
-library(spData)
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE)
 
-# Required Packages: 
-# dplyr, readr, lubridate, sf, ggmap, sf, spData, stringr
 
-# Main execution: 
-parse_file('data/scratch.md')
+renv::restore()
 
+library(dplyr, warn.conflicts = F)
+library(sf, warn.conflicts = F)
+library(ggmap, warn.conflicts = F)
+
+if (length(args)==0) {
+    LOG_FILE_PATH = 'data/scratch.md'
+    print('No arguments given, assuming "data/scratch.md"')
+} else if (length(args)==1) {
+    LOG_FILE_PATH = args[1]
+}
+if(!require(renv, warn.conflicts = F)){
+    install.packages("renv")
+}
 # Notes: 
 # the google function isn't used at the moment
 # test function below is broken and not used, was just used in early testing. 
@@ -97,11 +105,11 @@ time_segments <- function(state_time_df) {
 
 read_location_log_file <- function(filename) {
     data = readLines(filename)
-    location_lines <- data[str_detect(data, "Current Location")]
-    lat_long <- str_extract(location_lines, "-?\\d+\\.\\d+\\, -?\\d+\\.\\d+") %>% 
-        str_split(",", simplify = TRUE)
+    location_lines <- data[stringr::str_detect(data, "Current Location")]
+    lat_long <- stringr::str_extract(location_lines, "-?\\d+\\.\\d+\\, -?\\d+\\.\\d+") %>% 
+        stringr::str_split(",", simplify = TRUE)
     tibble(
-        timestamp = str_extract(location_lines, "\\[.*\\]") %>% gsub("\\[|\\]|shqiphone.shortcuts|Current Location:", "", .),
+        timestamp = stringr::str_extract(location_lines, "\\[.*\\]") %>% gsub("\\[|\\]|shqiphone.shortcuts|Current Location:", "", .),
         lat = lat_long[,2],
         long = lat_long[,1]
         )%>% 
@@ -115,14 +123,17 @@ read_location_log_file <- function(filename) {
 parse_file <- function(filename) {
     location_history = read_location_log_file(filename) 
     parsed_location_history = convert_coords_to_stateid(location_history, states = spData::us_states)
-    write_csv(parsed_location_history, 'data/parsed_location_history.csv')
+    readr::write_csv(parsed_location_history, 'data/parsed_location_history.csv')
     saveRDS(parsed_location_history, file = 'data/parsed_location_history_serialized.rds')
     location_intervals = time_segments(parsed_location_history)
-    write_csv(location_intervals, 'data/location_intervals.csv')
+    readr::write_csv(location_intervals, 'data/location_intervals.csv')
     saveRDS(location_intervals, file = 'data/location_intervals_serialized.rds')
-    return(location_intervals)
+    print('Parsing Complete.')
+ #   return(location_intervals)
     
 }
 
 
+
+parse_file(LOG_FILE_PATH)
 
