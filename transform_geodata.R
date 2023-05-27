@@ -3,7 +3,7 @@ library(sf)
 library(ggmap)
 library(spData)
 
-
+test_convert_and_duration <- function() {
 state_test <- tribble(
     ~lat, ~long, ~unixtime,
     -90, 44, 4000,
@@ -18,8 +18,15 @@ state_test <- tribble(
     -90, 44, 11000,
     -91,43, 33333,
 )
-covert_coords_to_stateid(state_test) %>% time_segments %>%  view
+converted = covert_coords_to_stateid(state_test) 
 
+print(converted)
+
+converted %>% 
+    time_segments %>% 
+    return()
+}
+test_convert_and_duration()
 
 covert_coords_to_stateid <- function(coords_df, states = spData::us_states) {
     
