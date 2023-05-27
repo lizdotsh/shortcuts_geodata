@@ -3,6 +3,18 @@ library(sf)
 library(ggmap)
 library(spData)
 
+# Required Packages: 
+# dplyr, readr, lubridate, sf, ggmap, sf, spData, stringr
+
+# Main execution: 
+parse_file('data/scratch.md')
+
+# Notes: 
+# the google function isn't used at the moment
+# test function below is broken and not used, was just used in early testing. 
+# leaving it in for now but might be removed. 
+# stores everything in a data directory
+
 test_convert_and_duration <- function() {
     state_test <- tribble(
         ~lat, ~long, ~unixtime,
@@ -31,7 +43,7 @@ test_convert_and_duration <- function() {
         time_segments %>% 
         return()
 }
-#test_convert_and_duration()
+
 
 convert_coords_to_stateid <- function(coords_df, states = spData::us_states) {
     
@@ -112,5 +124,5 @@ parse_file <- function(filename) {
     
 }
 
-parse_file('data/scratch.md')
+
 
